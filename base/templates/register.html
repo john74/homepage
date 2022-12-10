@@ -4,18 +4,23 @@
 {% block main %}
 
 
-<div>
-    <form method="POST" action="">
-        {% csrf_token %}
-        {% for name, attributes in fields.items %}
-        <div class="field">
-            <label for={{attributes.id}}>{{name}}</label>
-            <input type={{attributes.type}} name={{attributes.name}} id={{attributes.id}} required>
-        </div>
-        {% endfor %}
-        <input type="submit" value="Register">
-    </form>
-</div>
+<form id="registration" method="POST" action="">
+    {% csrf_token %}
+    {% for name, attributes in fields.items %}
+    <div class="field">
+        <label for="{{ attributes.id }}">{{name}}</label>
+        <input
+            type="{{ attributes.type }}"
+            name="{{ attributes.name }}"
+            id="{{ attributes.id }}"
+            placeholder="{{ attributes.placeholder }}"
+            autocomplete="off"
+            required
+        >
+    </div>
+    {% endfor %}
+    <input type="submit" value="Register">
+</form>
 
 <a href="{% url 'login_user' %}">login</a>
 
