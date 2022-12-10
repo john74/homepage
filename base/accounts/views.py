@@ -41,9 +41,7 @@ def register_user(request):
             CustomUser.objects.get(email=email)
             messages.info(request, 'User already exists.')
         except CustomUser.DoesNotExist:
-            password1 = request.POST.get('password1')
-            password2 = request.POST.get('password2')
-            passwords_match = password1 == password2
+            passwords_match = request.POST.get('password1') == request.POST.get('password2')
             if passwords_match:
                 form = CustomUserCreationForm(request.POST)
                 if form.is_valid():
@@ -60,19 +58,22 @@ def register_user(request):
             'type':'email',
             'name':'email',
             'id':'email',
-            'label':'email'
+            'label':'email',
+            'placeholder':'Enter your email'
         },
         'Password': {
             'type':'password',
             'name':'password1',
             'id':'password1',
-            'label':'password1'
+            'label':'password1',
+            'placeholder':'Enter password'
         },
         'Repeat password': {
             'type':'password',
             'name':'password2',
             'id':'password2',
-            'label':'password2'
+            'label':'password2',
+            'placeholder':'Repeat password'
         },
     }
     context = {'fields':fields}
