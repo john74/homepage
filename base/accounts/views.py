@@ -26,7 +26,24 @@ def login_user(request):
         if user is not None:
             login(request, user)
             return redirect('home')
-    return render(request, 'login.html')
+    fields = {
+        'Email': {
+            'type':'email',
+            'name':'email',
+            'id':'email',
+            'label':'email',
+            'placeholder':'Enter your email'
+        },
+        'Password': {
+            'type':'password',
+            'name':'password',
+            'id':'password',
+            'label':'password',
+            'placeholder':'Enter password'
+        }
+    }
+    context = {'fields':fields}
+    return render(request, 'login.html', context)
 
 
 def logout_user(request):
