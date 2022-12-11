@@ -30,6 +30,8 @@ class Bookmark(models.Model):
     category = models.ForeignKey(BookmarkCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=700)
+    icon = models.URLField(max_length=500)
+    shortcut = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Bookmarks'

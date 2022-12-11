@@ -1,0 +1,5 @@
+{% for shortcut in shortcuts %}
+    <a href="{{ shortcut.url }}" title="{{ shortcut.name }}">
+        <img src="{{ shortcut.icon }}" alt="{{ shortcut.name }}">
+    </a>
+{% endfor %}

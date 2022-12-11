@@ -3,9 +3,16 @@
 
 {% block main %}
 <body id="home">
+    <div id="wrapper">
+        <div id="sidebar">
+            {% include 'sidebar.html' %}
+        </div>
+        <div id="main">
+            {% include 'search.html' %}
+            {% include 'bookmarks.html' %}
+        </div>
+    </div>
 
-{% include 'search.html' %}
-{% include 'bookmarks.html' %}
 
 <a href="{%url 'logout_user'%}">logout</a>
 </body>
