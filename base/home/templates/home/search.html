@@ -1,0 +1,24 @@
+<div id="search">
+    <div id="available-engines">
+    {% for engine in search_engines %}
+        <span
+        class="choice"
+        data-name="{{ engine.name }}"
+        data-action="{{ engine.action }}"
+        data-method="{{ engine.method }}"
+        data-name-attribute="{{ engine.name_attribute }}"
+        >
+        <!-- <img src="{{ engine.icon }}" alt=""> -->
+        </span>
+    {% endfor %}
+    </div>
+
+    <form
+    id="search-engine-form"
+    action="{{ default_engine.action }}"
+    method="{{ default_engine.method }}"
+    >
+        <input id="search-bar" type="text" name="{{ default_engine.name_attribute }}">
+    </form>
+    <button type="submit" form="search-engine-form">Search</button>
+</div>
