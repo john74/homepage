@@ -32,7 +32,7 @@ def get_search_engines():
             'default': engine.default,
             'icon': icon.strip()
         })
-        return search_engines
+    return search_engines
 
 
 def get_default_search_engine(engines):
