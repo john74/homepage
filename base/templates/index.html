@@ -11,12 +11,10 @@
     <link rel="stylesheet" href="{% static 'main.css' %}">
     {% endblock styles_initial %}
 </head>
-<body id="body">
     {% block main %}{% endblock main %}
     {% if messages %}
         {% include 'messages.html' %}
     {% endif %}
     {% block styles_last %}{% endblock styles_last %}
     {% block scripts %}{% endblock scripts %}
-</body>
 </html>

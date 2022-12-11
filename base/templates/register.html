@@ -2,7 +2,7 @@
 {% block title %}Register{% endblock title %}
 
 {% block main %}
-
+<body id="register">
 <div id="registration">
     <form class="form" method="POST" action="">
         {% csrf_token %}
@@ -24,6 +24,6 @@
     <a href="{% url 'login_user' %}">login</a>
 </div>
 
-
+</body>
 
 {% endblock main %}
