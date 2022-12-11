@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import SearchEngine
+from .models import SearchEngine, BookmarkCategory, Bookmark
 
 def home(request):
     search_engine = SearchEngine.objects.exists()
@@ -45,8 +45,16 @@ def home(request):
         'icon': default_icon.strip()
     }
 
+    user_bookmark_categories = BookmarkCategory.objects.filter(user=request.user.id)
+    if user_bookmark_categories:
+        bookmark_categories = {}
+        for category in user_bookmark_categories:
+            bookmarks = Bookmark.objects.filter(category=category)
+            bookmark_categories[category] = bookmarks
+
     context = {
         'default_engine': default_engine,
-        'search_engines': search_engines
+        'search_engines': search_engines,
+        'bookmark_categories': bookmark_categories
     }
     return render(request, 'home.html', context)

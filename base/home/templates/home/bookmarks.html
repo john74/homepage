@@ -1,0 +1,12 @@
+<div id="bookmarks">
+    {% for category, bookmarks in bookmark_categories.items %}
+    <div class="category">
+        <h3 class="title">{{category}}</h3>
+        <div class="bookmarks">
+            {% for bookmark in bookmarks %}
+            <a href="{{ bookmark.url }}">{{ bookmark.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
