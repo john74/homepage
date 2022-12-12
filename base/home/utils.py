@@ -1,4 +1,5 @@
-from .models import SearchEngine, BookmarkCategory, Bookmark
+from .constants import API_KEY_SERVICE_NAMES
+from .models import SearchEngine, BookmarkCategory, Bookmark, ApiKey, CustomUser
 
 
 def add_search_engine():
@@ -68,3 +69,17 @@ def get_shortcuts(bookmark_categories):
                     'icon': bookmark.icon
                 })
     return shortcuts
+
+
+def add_api_service_names(user_id):
+    user = CustomUser.objects.get(id=user_id)
+    for name in API_KEY_SERVICE_NAMES:
+        ApiKey.objects.create(
+            user = user,
+            name = name
+        )
+
+
+def get_api_services(user_id):
+    services = ApiKey.objects.filter(user=user_id)
+    return services
