@@ -26,16 +26,12 @@ def login_user(request):
     fields = {
         'Email': {
             'type':'email',
-            'name':'email',
             'id':'email',
-            'label':'email',
             'placeholder':'Enter your email'
         },
         'Password': {
             'type':'password',
-            'name':'password',
             'id':'password',
-            'label':'password',
             'placeholder':'Enter password'
         }
     }
@@ -70,23 +66,27 @@ def register_user(request):
     fields = {
         'Email': {
             'type':'email',
-            'name':'email',
             'id':'email',
-            'label':'email',
             'placeholder':'Enter your email'
+        },
+        'Country': {
+            'type':'text',
+            'id':'country',
+            'placeholder':'Enter your country'
+        },
+        'City': {
+            'type':'text',
+            'id':'city',
+            'placeholder':'Enter your city'
         },
         'Password': {
             'type':'password',
-            'name':'password1',
             'id':'password1',
-            'label':'password1',
             'placeholder':'Enter password'
         },
         'Repeat password': {
             'type':'password',
-            'name':'password2',
             'id':'password2',
-            'label':'password2',
             'placeholder':'Repeat password'
         },
     }
