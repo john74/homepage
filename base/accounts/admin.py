@@ -13,14 +13,14 @@ class CustomUserAdmin(UserAdmin):
 
     # fields to be used in editing users
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'country', 'city')}),
     )
 
     # fields to be used when creating users
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'password1', 'password2')
+            'fields': ('email', 'password1', 'password2', 'country', 'city')
         }),
     )
     search_fields = ('email',)

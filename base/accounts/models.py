@@ -58,6 +58,8 @@ class CustomUser(AbstractUser):
     '''
     username = None
     email = models.EmailField(unique=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
 
     objects = UserManager()
 
