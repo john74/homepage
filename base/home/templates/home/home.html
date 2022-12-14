@@ -8,6 +8,9 @@
             {% include 'sidebar.html' %}
         </div>
         <div id="main">
+            {% if apis.open_weather %}
+                {% include 'weather.html' %}
+            {% endif %}
             {% include 'search.html' %}
             {% include 'bookmarks.html' %}
         </div>
