@@ -1,5 +1,7 @@
+from datetime import datetime, date
+import httpx
 from .constants import API_KEY_SERVICE_NAMES
-from .models import SearchEngine, BookmarkCategory, Bookmark, ApiKey, CustomUser
+from .models import SearchEngine, BookmarkCategory, Bookmark, ApiKey
 
 
 def add_search_engine():
@@ -71,8 +73,16 @@ def get_shortcuts(bookmark_categories):
     return shortcuts
 
 
-def add_api_service_names(user_id):
-    user = CustomUser.objects.get(id=user_id)
+def get_api_services(user_id):
+    apis = ApiKey.objects.filter(user=user_id)
+    services = {}
+    for api in apis:
+        name = api.name.lower().replace(' ', '_')
+        services[name] = api.key
+    return services
+
+
+def add_api_service_names(user):
     for name in API_KEY_SERVICE_NAMES:
         ApiKey.objects.create(
             user = user,
@@ -80,6 +90,71 @@ def add_api_service_names(user_id):
         )
 
 
-def get_api_services(user_id):
-    services = ApiKey.objects.filter(user=user_id)
-    return services
+def get_forecast_data(key, user):
+    if not key:
+        return
+    city = user.city
+    url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={key}&units=metric'
+    data = httpx.get(url)
+
+    if data.status_code != 200:
+        return
+    return data.json()
+
+
+def get_current_weather_data(key, user):
+    if not key:
+        return
+    city = user.city
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&units=metric'
+    data = httpx.get(url)
+
+    if data.status_code != 200:
+        return
+    return data.json()
+
+
+def get_week_forecast(data):
+    if not data:
+        return
+    timezone = data['city']['timezone']
+    days = data['list']
+    forecast = {}
+    for day in days:
+        date_time = datetime.utcfromtimestamp(day['dt'] + timezone)
+        forecast_time = date_time.strftime('%H:%M')
+        if forecast_time in ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00']:
+            continue
+
+        data = {
+            'temp': day['main']['temp'],
+            'temp_min': day['main']['temp_min'],
+            'temp_max': day['main']['temp_max'],
+            'feels_like': day['main']['feels_like'],
+            'weather_description': day['weather'][0]['description']
+        }
+
+        forecast_date = date_time.strftime('%d-%m-%Y')
+        if forecast_date in forecast:
+            forecast[forecast_date].update({forecast_time:data})
+        else:
+            forecast[forecast_date] = {forecast_time:data}
+    return forecast
+
+
+def get_today_forecast(data):
+    if not data:
+        return
+    today = date.today().strftime('%d-%m-%Y')
+    today_forecast = data[today]
+    return today_forecast
+
+
+def get_current_weather(data):
+    return {
+        'temp': data['main']['temp'],
+        'temp_min': data['main']['temp_min'],
+        'temp_max': data['main']['temp_max'],
+        'feels_like': data['main']['feels_like'],
+        'weather_description': data['weather'][0]['description']
+    }
