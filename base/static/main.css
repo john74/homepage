@@ -2,3 +2,32 @@ body {
     background-color: #1D1E22;
     color: #fff;
 }
+
+#bookmarks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3%;
+    padding: 50px 200px;
+}
+
+#bookmarks > .category {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #fff;
+    min-width: 15.7%;
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+#bookmarks > :nth-child(n+6) {
+    margin-top: 20px;
+}
+
+.bookmarks {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    min-height: 180px;
+    max-height: 180px;
+}
