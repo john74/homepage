@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'main.css' %}">
-    {% block styles_initial %}
-    <link rel="stylesheet" href="{% static 'main.css' %}">
-    {% endblock styles_initial %}
 </head>
     {% block main %}{% endblock main %}
     {% if messages %}
