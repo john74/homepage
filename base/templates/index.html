@@ -8,8 +8,9 @@
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
-    {% block main %}{% endblock main %}
-    {% if messages %}
-        {% include 'messages.html' %}
-    {% endif %}
+    {% block main %}
+        {% if messages %}
+            {% include 'messages.html' %}
+        {% endif %}
+    {% endblock main %}
 </html>

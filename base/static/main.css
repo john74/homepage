@@ -1,5 +1,11 @@
 /* =================== GLOBAL =================== */
+:root {
+    --primary: #1D1E22;
+    --secondary: #5468FF;
+}
+
 * {
+    all: unset;
     position:relative;
     padding:0;
     margin:0;
@@ -11,6 +17,10 @@
     box-sizing:border-box;
     color:inherit;
     max-width:100%;
+    background-color: transparent;
+}
+html > :not(body) {
+    display: none!important;
 }
 html,body {
 height:100%;
@@ -19,12 +29,8 @@ font-weight:lighter;
 font-family:sans-serif;
 }
 
-input {
-    all: unset;
-}
-
 body {
-    background-color: #1D1E22;
+    background-color: var(--primary);
     color: #fff;
 }
 
@@ -60,3 +66,45 @@ body {
 
 
 /* ============== LOGIN PAGE ============== */
+#login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 20px;
+}
+
+#login > .form,
+#login .field {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+#login #sign-up {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+#login .input {
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    font-size: 20px;
+}
+
+#login .btn {
+    background-color: var(--secondary);
+    padding: 15px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#login #sign-up a {
+    color: var(--secondary);
+    font-weight: bold;
+    cursor: pointer;
+}

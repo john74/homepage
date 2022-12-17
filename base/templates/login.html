@@ -3,13 +3,13 @@
 {% block main %}
 
 <body id="login">
-<div id="login">
     <form class="form" method="POST" action="">
         {% csrf_token %}
         {% for name, attributes in fields.items %}
         <div class="field">
-            <label for="{{ attributes.id }}">{{name}}</label>
+            <label class="label" for="{{ attributes.id }}">{{name}}</label>
             <input
+                class="input"
                 type="{{ attributes.type }}"
                 name="{{ attributes.id }}"
                 id="{{ attributes.id }}"
@@ -19,10 +19,12 @@
             >
         </div>
         {% endfor %}
-        <input type="submit" value="Login">
+        <input class="btn" type="submit" value="Login">
     </form>
-    <a href="{% url 'register_user' %}">register</a>
-</div>
+    <div id="sign-up">
+        <p>Don't have an account?</p>
+        <a href="{% url 'register_user' %}">Sign Up</a>
+    </div>
 </body>
 
 {% endblock main %}
