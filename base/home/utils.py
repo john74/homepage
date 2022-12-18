@@ -146,7 +146,9 @@ def get_today_forecast(data):
     if not data:
         return
     today = date.today().strftime('%d-%m-%Y')
-    today_forecast = data[today]
+    today_forecast = None
+    if today in data:
+        today_forecast = data[today]
     return today_forecast
 
 

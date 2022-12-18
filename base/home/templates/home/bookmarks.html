@@ -4,7 +4,7 @@
         <h3 class="title">{{category}}</h3>
         <div class="bookmarks">
             {% for bookmark in bookmarks %}
-            <a href="{{ bookmark.url }}">{{ bookmark.name }}</a>
+            <a class="bookmark" href="{{ bookmark.url }}">{{ bookmark.name }}</a>
             {% endfor %}
         </div>
     </div>

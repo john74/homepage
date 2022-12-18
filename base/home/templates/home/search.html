@@ -2,14 +2,14 @@
     <div id="available-engines">
     {% for engine in search_engines %}
         <span
-        class="choice"
+        class="engine"
         data-name="{{ engine.name }}"
         data-action="{{ engine.action }}"
         data-method="{{ engine.method }}"
         data-name-attribute="{{ engine.name_attribute }}"
         >
         {{ engine.name }}
-        <!-- <img src="{{ engine.icon }}" alt=""> -->
+        <!-- <img src="{{engine.icon}}" alt=""> -->
         </span>
     {% endfor %}
     </div>
@@ -19,8 +19,8 @@
     action="{{ default_engine.action }}"
     method="{{ default_engine.method }}"
     >
-        <input id="search-bar" type="text" name="{{ default_engine.name_attribute }}">
+        <input id="search-bar" type="text" name="{{ default_engine.name_attribute }}" spellcheck="false">
+        <button type="submit">Search</button>
     </form>
-    <button type="submit" form="search-engine-form">Search</button>
 </div>
 {{api_services.open}}

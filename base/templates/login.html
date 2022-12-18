@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock title %}
 {% block main %}
 
-<body id="login">
+<div id="login">
     <form class="form" method="POST" action="">
         {% csrf_token %}
         {% for name, attributes in fields.items %}
@@ -25,6 +25,6 @@
         <p>Don't have an account?</p>
         <a href="{% url 'register_user' %}">Sign Up</a>
     </div>
-</body>
+</div>
 
 {% endblock main %}

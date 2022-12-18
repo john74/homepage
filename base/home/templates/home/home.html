@@ -2,21 +2,20 @@
 {% block title %}Home{% endblock title %}
 
 {% block main %}
-<body id="home">
+
+<div id="home">
+    
     <div id="wrapper">
         <div id="sidebar">
             {% include 'sidebar.html' %}
         </div>
         <div id="main">
             {% if apis.open_weather %}
-                {% include 'weather.html' %}
+
             {% endif %}
             {% include 'search.html' %}
             {% include 'bookmarks.html' %}
         </div>
     </div>
-
-
-<a href="{%url 'logout_user'%}">logout</a>
-</body>
+</div>
 {% endblock main %}
