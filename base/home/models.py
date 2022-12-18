@@ -38,15 +38,3 @@ class Bookmark(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class ApiKey(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    key = models.CharField(max_length=300)
-
-    class Meta:
-        verbose_name_plural = 'Api Keys'
-
-    def __str__(self):
-        return self.name
