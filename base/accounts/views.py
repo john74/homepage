@@ -62,22 +62,11 @@ def register_user(request):
                 return redirect('register_user')
         return redirect('login_user')
 
-    form = CustomUserCreationForm()
     fields = {
         'Email': {
             'type':'email',
             'id':'email',
             'placeholder':'Enter your email'
-        },
-        'Country': {
-            'type':'text',
-            'id':'country',
-            'placeholder':'Enter your country'
-        },
-        'City': {
-            'type':'text',
-            'id':'city',
-            'placeholder':'Enter your city'
         },
         'Password': {
             'type':'password',
