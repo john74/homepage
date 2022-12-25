@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% block title %}Settings{% endblock title %}
+{% block main %}
+
+
+
+<form method="POST" action="">
+{% include 'profile_form.html' %}
+{% include 'email_form.html' %}
+<input type="submit" value="Save">
+</form>
+{% endblock main %}
