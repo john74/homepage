@@ -265,3 +265,14 @@ form {
     flex-direction: column;
     margin-top: 20px;
 }
+
+
+.email-service,
+.email-account {
+    display: flex;
+    flex-direction: column;
+}
+
+.email-account {
+    margin: 30px 0;
+}
