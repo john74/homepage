@@ -95,6 +95,7 @@ def save_email_form(email_data):
             email_form.service = service
             email_form.save()
 
+
 def get_or_create_profile(user):
     try:
         return Profile.objects.get(user=user.id)
@@ -102,20 +103,30 @@ def get_or_create_profile(user):
         return Profile.objects.create(user=user)
 
 
-def get_profile_form_data(data, profile):
-    # exclude id and user fields
-    profile_field_names = [field.name for field in profile._meta.get_fields()[2:]]
-    changed_data = {}
-    for field_name in profile_field_names:
-        field_value = getattr(profile, field_name)
-        if field_value is None:
-            field_value = ''
-        form_field_value = data.get(field_name)
-        if field_value != form_field_value:
-            changed_data[field_name] = form_field_value
-    if changed_data:
-        changed_data['id'] = profile.id
-    return changed_data
+def get_form_data(model, form_data):
+    model_field_names = [field.name for field in model._meta.get_fields()]
+    model_form_data = {}
+    field_prefix = model._meta.verbose_name.lower()
+    for field_name in model_field_names:
+        form_field_values = form_data.getlist(f'{field_prefix}-{field_name}')
+        model_form_data[field_name] = form_field_values[0]
+    return model_form_data
+
+
+def get_profile_db_data(profile):
+    return {
+        'id': str(profile.id),
+        'user': profile.user,
+        'username': profile.username,
+        'country': profile.country,
+        'city': profile.city
+    }
+
+
+def get_changed_profile_data(form_data, db_data):
+    if form_data != db_data:
+        return form_data
+    return
 
 
 def save_profile_form(data):

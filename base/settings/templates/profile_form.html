@@ -1,16 +1,14 @@
-<!-- <form id="profile-form" action="" method="POST"> -->
-    {% csrf_token %}
-    <div class="field">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" value="{{ profile.username | default_if_none:'' }}">
-    </div>
-    <div class="field">
-        <label for="country">Country</label>
-        <input type="text" name="country" id="country" value="{{ profile.country | default_if_none:'' }}">
-    </div>
-    <div class="field">
-        <label for="city">City</label>
-        <input type="text" name="city" id="city" value="{{ profile.city | default_if_none:'' }}">
-    </div>
-    <!-- <input type="submit" value="Save">
-</form> -->
+<div class="field">
+    <label for="username">Username</label>
+    <input type="text" name="profile-username" id="username" value="{{ profile.username | default_if_none:'' }}">
+</div>
+<div class="field">
+    <label for="country">Country</label>
+    <input type="text" name="profile-country" id="country" value="{{ profile.country | default_if_none:'' }}">
+</div>
+<div class="field">
+    <label for="city">City</label>
+    <input type="text" name="profile-city" id="city" value="{{ profile.city | default_if_none:'' }}">
+</div>
+<input type="hidden" name="profile-id" value="{{ profile.id }}">
+<input type="hidden" name="profile-user" value="{{ profile.user }}">

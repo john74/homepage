@@ -5,9 +5,9 @@
 
 
 <form method="POST" action="">
-<input type="submit" value="Save">
-{% include 'profile_form.html' %}
-{% include 'email_form.html' %}
-
+    {% csrf_token %}
+    <input type="submit" value="Save">
+    {% include 'profile_form.html' %}
+    {% include 'email_form.html' %}
 </form>
 {% endblock main %}
