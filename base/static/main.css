@@ -252,3 +252,16 @@ body {
     width: 100%;
     background-color: var(--secondary);
 }
+
+
+input {
+    background-color: red;
+    color: #F5F5F5;
+    margin-left: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
