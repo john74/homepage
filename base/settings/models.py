@@ -1,21 +1,22 @@
-from django import forms
 from django.db import models
 from accounts.models import CustomUser
 
 
 class Interface(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    theme_light = models.BooleanField(default=False)
+    dark_mode = models.BooleanField(default=True)
     sidebar_right = models.BooleanField(default=False)
     primary_color = models.CharField(max_length=10)
     secondary_color = models.CharField(max_length=10)
     text_color = models.CharField(max_length=10)
 
     class Meta:
+        verbose_name = 'Interface'
         verbose_name_plural = 'Interface'
 
     def __str__(self):
         return 'Interface'
+
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
@@ -24,6 +25,7 @@ class Profile(models.Model):
     city = models.CharField(max_length=100, null=True, blank=True, default='')
 
     class Meta:
+        verbose_name = 'Profile'
         verbose_name_plural = 'Profile'
 
     def __str__(self):
@@ -49,6 +51,7 @@ class Email(models.Model):
     color = models.CharField(max_length=10, null=True, blank=True, default='')
 
     class Meta:
+        verbose_name = 'Email'
         verbose_name_plural = 'Emails'
 
     def __str__(self):
@@ -57,10 +60,11 @@ class Email(models.Model):
 
 class ApiKey(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    key = models.CharField(max_length=500)
+    name = models.CharField(max_length=100, null=True, blank=True, default='')
+    key = models.CharField(max_length=500, null=True, blank=True, default='')
 
     class Meta:
+        verbose_name = 'Api'
         verbose_name_plural = 'Api Keys'
 
     def __str__(self):
