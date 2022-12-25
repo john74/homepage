@@ -108,6 +108,8 @@ def get_form_data(model, form_data):
     model_form_data = {}
     field_prefix = model._meta.verbose_name.lower()
     for field_name in model_field_names:
+        if field_name in ['user']:
+            continue
         form_field_values = form_data.getlist(f'{field_prefix}-{field_name}')
         model_form_data[field_name] = form_field_values[0]
     return model_form_data
@@ -116,7 +118,6 @@ def get_form_data(model, form_data):
 def get_profile_db_data(profile):
     return {
         'id': str(profile.id),
-        'user': profile.user,
         'username': profile.username,
         'country': profile.country,
         'city': profile.city
