@@ -1,7 +1,8 @@
 from datetime import datetime, date
 import httpx
 from .constants import API_KEY_SERVICE_NAMES
-from .models import SearchEngine, BookmarkCategory, Bookmark, ApiKey
+from .models import SearchEngine, BookmarkCategory, Bookmark
+from settings.models import ApiKey
 
 
 def add_search_engine():
