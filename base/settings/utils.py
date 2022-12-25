@@ -26,8 +26,6 @@ def get_email_form_data(form_data):
     email_model_field_names = [field.name for field in Email._meta.get_fields()]
     email_form_data = {}
     for field_name in email_model_field_names:
-        if field_name in ['service']:
-            continue
         form_field_values = form_data.getlist(f'email-{field_name}')
         email_form_data[field_name] = form_field_values
     return email_form_data
@@ -36,6 +34,7 @@ def get_email_form_data(form_data):
 def get_zipped_email_form_data(form_data):
     return zip(
         form_data['id'],
+        form_data['service'],
         form_data['email'],
         form_data['password'],
         form_data['category'],
@@ -49,6 +48,7 @@ def get_zipped_email_db_data(services):
         for account in accounts:
             data.append(tuple([
                 str(account.id),
+                str(account.service.id),
                 account.email,
                 account.password,
                 account.category,
@@ -68,18 +68,29 @@ def get_changed_email_data(form_data, db_data):
 def save_email_form(email_data):
     for data in email_data:
         email_id = data[0]
-        email_instance = Email.objects.get(id=email_id)
+
+        try:
+            email_instance = Email.objects.get(id=email_id)
+        except Email.DoesNotExist:
+            email_instance = None
+
         form = EmailForm(
             {
-                'email': data[1],
-                'password': data[2],
-                'category': data[3],
-                'color': data[4]
+                'email': data[2],
+                'password': data[3],
+                'category': data[4],
+                'color': data[5]
             },
             instance=email_instance
         )
+
+        service_id = data[1]
+        try:
+            service = EmailService.objects.get(id=service_id)
+        except EmailService.DoesNotExist:
+            return
+
         if form.is_valid():
-            service = EmailService.objects.get(id=email_instance.service.id)
             email_form = form.save(commit=False)
             email_form.service = service
             email_form.save()
