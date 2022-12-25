@@ -1,20 +1,34 @@
-{% for email in emails %}
- {{loop.index}}
-<!-- <form id="email-form" class="form" action="" method="POST">
-    {% csrf_token %} -->
-    <div class="field">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" value="{{ email.email | default_if_none:'' }}">
+{% for service, email_accounts in email_services.items %}
+
+<div class="email-service">
+    <h3 class="service-title">{{service.name}}</h3>
+    {% for account in email_accounts %}
+    <div class="email-account">
+        <h3 class="service-title">{{service.name}}/{{account.category}}</h3>
+
+        <div class="field">
+            <label for="email-{{ account.id }}">Email</label>
+            <input type="email" name="email-email" id="email-{{ account.id }}" value="{{ account.email }}">
+        </div>
+
+        <div class="field">
+            <label for="password-{{ account.id }}">Password</label>
+            <input type="text" name="email-password" id="password-{{ account.id }}" value="{{ account.password }}">
+        </div>
+
+        <div class="field">
+            <label for="category-{{ account.id }}">Category</label>
+            <input type="text" name="email-category" id="category-{{ account.id }}" value="{{ account.category }}">
+        </div>
+
+        <div class="field">
+            <label for="color-{{ account.id }}">Color</label>
+            <input type="text" name="email-color" id="color-{{ account.id }}" value="{{ account.color }}">
+        </div>
+        <input type="hidden" name="email-id" value="{{ account.id }}">
+        <input type="hidden" name="email-service-id" value="{{ service.id }}">
     </div>
-    <div class="field">
-        <label for="password">Password</label>
-        <input type="text" name="email-password" id="password" value="{{ email.password | default_if_none:''}}">
-    </div>
-    <div class="field">
-        <label for="color">Notification Color</label>
-        <input type="text" name="color" id="color" value="{{ email.color | default_if_none:''}}">
-    </div>
-    <!-- <input type="hidden" name="id" id="id" value="{{ email.id }}"> -->
-    <!-- <input type="submit" value="Save"> -->
-<!-- </form> -->
+    {% endfor %}
+</div>
+
 {% endfor %}
