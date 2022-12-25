@@ -131,7 +131,10 @@ def get_changed_profile_data(form_data, db_data):
 
 def save_profile_form(data):
     profile_id = data['id']
-    profile = Profile.objects.get(id=profile_id)
+    try:
+        profile = Profile.objects.get(id=profile_id)
+    except Profile.DoesNotExist:
+        return
     form = ProfileForm(data, instance=profile)
     if form.is_valid():
         profile_form = form.save(commit=False)
