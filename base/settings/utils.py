@@ -1,8 +1,19 @@
 from .models import Profile
+from .models import ApiKey
 from .models import EmailService
 from .models import Email
 from .forms import ProfileForm
 from .forms import EmailForm
+from .forms import ApiKeyForm
+
+
+def create_api_services(user):
+    services = ApiKey.objects.filter(user=user.id)
+    if services:
+        return services
+    services = ['Open Weather']
+    for service in services:
+        ApiKey.objects.create(user=user, name=service)
 
 
 def create_email_services(user):
@@ -142,3 +153,53 @@ def save_profile_form(data):
         profile_form.user = profile.user
         profile_form.save()
     return
+
+
+def group_data(data):
+    d = []
+    first_key = next(iter(data))
+    max_loops = len(data[first_key])
+    for loop in range(max_loops):
+        temp = {}
+        for key, value in data.items():
+            temp[key] = value[loop]
+        d.append(temp)
+    return d
+
+
+def get_api_form_data(model, form_data):
+    model_field_names = [field.name for field in model._meta.get_fields()]
+    model_form_data = {}
+    field_prefix = model._meta.verbose_name.lower()
+    for field_name in model_field_names:
+        form_field_values = form_data.getlist(f'{field_prefix}-{field_name}')
+        if form_field_values:
+            model_form_data[field_name] = form_field_values
+    return group_data(model_form_data)
+
+
+def get_zipped_api_db_data(form_data):
+    data = []
+    for value in form_data.values():
+        del value['user_id']
+        value['id'] = str(value['id'])
+        data.append(value)
+    return data
+
+
+def get_changed_api_data(form_data, db_data):
+    changed_data = []
+    for data in form_data:
+        if data not in db_data:
+            changed_data.append(data)
+    return changed_data
+
+def save_api_form(api_data):
+    for data in api_data:
+        try:
+            instance = ApiKey.objects.get(id=data['id'])
+        except ApiKey.DoesNotExist:
+            continue
+        form = ApiKeyForm(data, instance=instance)
+        if form.is_valid():
+            form.save()

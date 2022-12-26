@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from accounts.models import CustomUser
-from .models import Profile, Email
+from .models import Profile, Email, ApiKey
 from .forms import ProfileForm
 from .forms import InterfaceForm
 from .forms import EmailForm
@@ -18,15 +18,22 @@ from .utils import save_email_form
 from .utils import get_form_data
 from .utils import get_profile_db_data
 from .utils import get_changed_profile_data
+from .utils import create_api_services
+from .utils import get_api_form_data
+from .utils import get_zipped_api_db_data
+from .utils import get_changed_api_data
+from .utils import save_api_form
 
 
 def settings(request):
     user_id = request.user.id
     user = CustomUser.objects.get(id=user_id)
     create_email_services(user)
+    create_api_services(user)
 
-    email_services = get_email_accounts(user)
     profile = Profile.objects.get(user=user_id)
+    email_services = get_email_accounts(user)
+    apis = ApiKey.objects.filter(user=user.id)
 
     if request.method == 'POST':
         data = request.POST
@@ -45,11 +52,19 @@ def settings(request):
         if changed_email_data:
             save_email_form(changed_email_data)
 
+        api_form_data = get_api_form_data(ApiKey, data)
+        api_db_data = get_zipped_api_db_data(apis)
+        changed_api_data = get_changed_api_data(api_form_data, api_db_data)
+        if changed_api_data:
+            save_api_form(changed_api_data)
+
+
 
         return redirect('settings')
 
     context = {
         'profile': profile,
-        'email_services': email_services
+        'email_services': email_services,
+        'apis': apis
     }
     return render(request, 'settings.html', context)
