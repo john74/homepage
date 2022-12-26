@@ -34,7 +34,7 @@ class Profile(models.Model):
 
 class EmailService(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="+")
-    name = models.CharField(max_length=40)
+    name = models.CharField(max_length=40, unique=True)
 
     class Meta:
         verbose_name_plural = 'Email Services'
@@ -45,7 +45,7 @@ class EmailService(models.Model):
 
 class Email(models.Model):
     service = models.ForeignKey(EmailService, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=100, null=True, blank=True, default='')
+    email = models.EmailField(unique=True, max_length=100, null=True, blank=True, default='')
     password = models.CharField(max_length=50, null=True, blank=True, default='')
     category = models.CharField(max_length=10, null=True, blank=True, default='')
     color = models.CharField(max_length=10, null=True, blank=True, default='')
