@@ -2,13 +2,25 @@ from django.db import models
 from accounts.models import CustomUser
 
 
-class Interface(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    dark_mode = models.BooleanField(default=True)
-    sidebar_right = models.BooleanField(default=False)
+class Theme(models.Model):
+    name = models.CharField(max_length=10, unique=True)
     primary_color = models.CharField(max_length=10)
     secondary_color = models.CharField(max_length=10)
     text_color = models.CharField(max_length=10)
+
+    class Meta:
+        verbose_name = 'Theme'
+        verbose_name_plural = 'Themes'
+
+    def __str__(self):
+        return self.name
+
+
+class Interface(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    theme = models.ForeignKey(Theme, on_delete=models.CASCADE, default=1)
+    dark_mode = models.BooleanField(default=True)
+    sidebar_right = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = 'Interface'
