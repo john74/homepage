@@ -1,11 +1,4 @@
-from .models import Profile
-from .models import ApiKey
-from .models import EmailService
-from .models import Email
-from .forms import ProfileForm
-from .forms import EmailForm
-from .forms import ApiKeyForm
-from .models import Theme
+from .models import Api, EmailService, Email, Theme
 
 
 def get_items_to_delete(data):
@@ -30,12 +23,12 @@ def delete_items(items):
 
 
 def create_api_services(user):
-    services = ApiKey.objects.filter(user=user.id)
+    services = Api.objects.filter(user=user.id)
     if services:
         return services
     services = ['Open Weather']
     for service in services:
-        ApiKey.objects.create(user=user, name=service)
+        Api.objects.create(user=user, name=service)
 
 
 def create_email_services(user):
@@ -76,6 +69,7 @@ def group_form_data(form_data, prefix):
             data[db_field_name] = values
     return group_test_data(data)
 
+
 def sanitize_object(value, form_data):
     form_fields = form_data[0].keys()
     fields_to_remove = []
@@ -94,7 +88,6 @@ def group_db_data(db_data, form_data):
     for value in db_data.values():
         obj = sanitize_object(value, form_data)
         data.append(obj)
-    # print('TEST DB DATA -> ', data)
     return data
 
 
@@ -108,21 +101,15 @@ def get_changed_data(form_data, db_data):
 
 def save_form(model, form, form_data):
     for data in form_data:
-        # print('DATA INSIDE SAVE FORM -> ', data)
         try:
             instance = model.objects.get(id=data['id'])
         except model.DoesNotExist:
             instance = None
-        # print('INSTANCE INSIDE SAVE FORM -> ', instance)
         model_form = form(data, instance=instance)
-        # print('MODEL FORM INSIDE SAVE FORM -> ', model_form)
-        # print('MODEL FORM ERRORS -> ', model_form.errors.as_data())
         errors = model_form.errors
         if errors:
-            # print('ERRORS AAAAA -> ', errors)
             return errors
         if model_form.is_valid():
-            # print('MODEL NAME -> ', model.__name__.lower())
             new_form = model_form.save(commit=False)
             if model.__name__.lower() == 'email':
                 try:
