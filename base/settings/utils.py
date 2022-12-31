@@ -5,6 +5,28 @@ from .models import Email
 from .forms import ProfileForm
 from .forms import EmailForm
 from .forms import ApiKeyForm
+from .models import Theme
+
+
+def get_items_to_delete(data):
+    items_to_delete = []
+    for item in data:
+        if 'delete' in item:
+            items_to_delete.append(item)
+    return items_to_delete
+
+
+def delete_items(items):
+    models = {'theme': Theme, 'email': Email}
+    for item in items:
+        try:
+            # delete-theme-10
+            model = models[item.split('-')[1]] # Theme
+            item_id = item.split('-')[-1] # 10
+            obj = model.objects.get(id=item_id)
+        except (IndexError, KeyError, Theme.DoesNotExist, Email.DoesNotExist):
+            return
+        obj.delete()
 
 
 def create_api_services(user):
@@ -48,11 +70,10 @@ def group_test_data(data):
 def group_form_data(form_data, prefix):
     data = {}
     for field_name in form_data.keys():
-        if field_name.startswith(prefix):
+        if prefix in field_name and 'delete' not in field_name:
             values = form_data.getlist(field_name)
             db_field_name = field_name.replace(f'{prefix}-', '')
             data[db_field_name] = values
-    # print('GROUPED FORM DATA -> ', group_test_data(data))
     return group_test_data(data)
 
 def sanitize_object(value, form_data):
@@ -87,13 +108,21 @@ def get_changed_data(form_data, db_data):
 
 def save_form(model, form, form_data):
     for data in form_data:
+        # print('DATA INSIDE SAVE FORM -> ', data)
         try:
             instance = model.objects.get(id=data['id'])
         except model.DoesNotExist:
             instance = None
-
+        # print('INSTANCE INSIDE SAVE FORM -> ', instance)
         model_form = form(data, instance=instance)
+        # print('MODEL FORM INSIDE SAVE FORM -> ', model_form)
+        # print('MODEL FORM ERRORS -> ', model_form.errors.as_data())
+        errors = model_form.errors
+        if errors:
+            # print('ERRORS AAAAA -> ', errors)
+            return errors
         if model_form.is_valid():
+            # print('MODEL NAME -> ', model.__name__.lower())
             new_form = model_form.save(commit=False)
             if model.__name__.lower() == 'email':
                 try:
