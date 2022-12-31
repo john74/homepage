@@ -3,10 +3,10 @@ from accounts.models import CustomUser
 
 
 class Theme(models.Model):
-    name = models.CharField(max_length=10, unique=True)
-    primary_color = models.CharField(max_length=10)
-    secondary_color = models.CharField(max_length=10)
-    text_color = models.CharField(max_length=10)
+    name = models.CharField(max_length=50, unique=True)
+    primary_color = models.CharField(max_length=9, null=True, blank=True, default='')
+    secondary_color = models.CharField(max_length=9, null=True, blank=True, default='')
+    text_color = models.CharField(max_length=9, null=True, blank=True, default='')
 
     class Meta:
         verbose_name = 'Theme'
