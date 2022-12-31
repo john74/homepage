@@ -2,7 +2,7 @@ from datetime import datetime, date
 import httpx
 from .constants import API_KEY_SERVICE_NAMES
 from .models import SearchEngine, BookmarkCategory, Bookmark
-from settings.models import ApiKey
+from settings.models import Api
 
 
 def add_search_engine():
@@ -75,7 +75,7 @@ def get_shortcuts(bookmark_categories):
 
 
 def get_api_services(user_id):
-    apis = ApiKey.objects.filter(user=user_id)
+    apis = Api.objects.filter(user=user_id)
     services = {}
     for api in apis:
         name = api.name.lower().replace(' ', '_')
@@ -85,7 +85,7 @@ def get_api_services(user_id):
 
 def add_api_service_names(user):
     for name in API_KEY_SERVICE_NAMES:
-        ApiKey.objects.create(
+        Api.objects.create(
             user = user,
             name = name
         )

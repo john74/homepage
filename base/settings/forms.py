@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Interface, Profile, Email, ApiKey, Theme
+from .models import Interface, Profile, Email, Api, Theme
 
 
 class ThemeForm(ModelForm):
@@ -33,9 +33,9 @@ class EmailForm(ModelForm):
         exclude = ['user', 'service']
 
 
-class ApiKeyForm(ModelForm):
+class ApiForm(ModelForm):
 
     class Meta:
-        model = ApiKey
+        model = Api
         fields = '__all__'
         exclude = ['user']
