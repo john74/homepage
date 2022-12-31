@@ -1,5 +1,22 @@
 <div id="themes">
     {% for theme in themes %}
-        {{theme.name}}
+    <div class="field">
+        <label for="theme-{{ theme.name | lower }}-name">Name</label>
+        <input type="text" name="theme-name" id="theme-{{ theme.name | lower }}-name" value="{{ theme.name | default_if_none:'' }}">
+    </div>
+    <div class="field">
+        <label for="theme-{{ theme.name | lower }}-primary-color">Primary Color</label>
+        <input type="text" name="theme-primary_color" id="theme-{{ theme.name | lower }}-primary-color" value="{{ theme.primary_color | default_if_none:'' }}">
+    </div>
+    <div class="field">
+        <label for="theme-{{ theme.name | lower }}-secondary-color">Secondary Color</label>
+        <input type="text" name="theme-secondary_color" id="theme-{{ theme.name | lower }}-secondary-color" value="{{ theme.secondary_color | default_if_none:'' }}">
+    </div>
+    <div class="field">
+        <label for="theme-{{ theme.name | lower }}-text-color">Text Color</label>
+        <input type="text" name="theme-text_color" id="theme-{{ theme.name | lower }}-text-color" value="{{ theme.text_color | default_if_none:'' }}">
+    </div>
+    <input type="hidden" name="theme-id" id="theme-{{ theme.name | lower }}-id" value="{{ theme.id }}">
+    <input type="checkbox" name='delete-theme-{{ theme.id }}'>
     {% endfor %}
 </div>

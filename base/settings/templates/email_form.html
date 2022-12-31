@@ -1,3 +1,6 @@
+
+
+<div id="settings-email" class="field-group">
 {% for service, email_accounts in email_services.items %}
 
 <div class="email-service">
@@ -17,7 +20,7 @@
         </div>
 
         <div class="field">
-            <label for="category-{{ account.id }}">Category</label>
+            <label for="email-category-{{ account.id }}">Category</label>
             <input type="text" name="email-category" id="category-{{ account.id }}" value="{{ account.category | default_if_none:'' }}">
         </div>
 
@@ -26,9 +29,11 @@
             <input type="text" name="email-color" id="color-{{ account.id }}" value="{{ account.color | default_if_none:'' }}">
         </div>
         <input type="hidden" name="email-id" value="{{ account.id }}">
-        <input type="hidden" name="email-service" value="{{ service.id }}">
+        <input type="hidden" name="email-service_id" value="{{ service.id }}">
+        <input type="checkbox" name='delete-email-{{ account.id }}'>
     </div>
     {% endfor %}
 </div>
 
 {% endfor %}
+</div>

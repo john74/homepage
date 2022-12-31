@@ -1,13 +1,17 @@
-<div class="field">
-    <label for="username">Username</label>
-    <input type="text" name="profile-username" id="username" value="{{ profile.username | default_if_none:'' }}">
+{% for profile in profiles %}
+<div id="settings-profile" class="field-group">
+    <div class="field">
+        <label for="username">Username</label>
+        <input type="text" name="profile-username" id="username" value="{{ profile.username | default_if_none:'' }}">
+    </div>
+    <div class="field">
+        <label for="country">Country</label>
+        <input type="text" name="profile-country" id="country" value="{{ profile.country | default_if_none:'' }}">
+    </div>
+    <div class="field">
+        <label for="city">City</label>
+        <input type="text" name="profile-city" id="city" value="{{ profile.city | default_if_none:'' }}">
+    </div>
+    <input type="hidden" name="profile-id" value="{{ profile.id }}">
 </div>
-<div class="field">
-    <label for="country">Country</label>
-    <input type="text" name="profile-country" id="country" value="{{ profile.country | default_if_none:'' }}">
-</div>
-<div class="field">
-    <label for="city">City</label>
-    <input type="text" name="profile-city" id="city" value="{{ profile.city | default_if_none:'' }}">
-</div>
-<input type="hidden" name="profile-id" value="{{ profile.id }}">
+{% endfor %}
