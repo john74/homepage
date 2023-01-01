@@ -58,6 +58,7 @@ class CustomUser(AbstractUser):
     '''
     username = None
     email = models.EmailField(unique=True)
+    first_login = models.BooleanField(default=True)
 
     objects = UserManager()
 
