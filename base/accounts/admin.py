@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
 
     # fields to be used in editing users
     fieldsets = (
-        (None, {'fields': ('email', 'password')}),
+        (None, {'fields': ('email', 'password', 'first_login')}),
     )
 
     # fields to be used when creating users
