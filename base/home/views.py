@@ -18,7 +18,6 @@ from .utils import get_current_weather
 def home(request):
     user = request.user
     if user.first_login:
-        print('FIRST TIME')
         return redirect('/setup/')
 
     return HttpResponse(f'HOME PAGE -> {user}')
