@@ -1,42 +1,6 @@
 from datetime import datetime, date
 import httpx
 from .constants import API_KEY_SERVICE_NAMES
-from .models import BookmarkCategory, Bookmark
-from settings.models import EmailService, ApiKey, Profile, Interface
-
-
-# def add_search_engine():
-#     SearchEngine.objects.create(
-#         name = "Google",
-#         url = "https://www.google.com",
-#         form_action = "/search",
-#         form_method = "GET",
-#         name_attribute = 'q',
-#         default = True
-#     )
-
-
-# def get_search_engines():
-#     engines = SearchEngine.objects.all().order_by('-default', 'name')
-#     search_engines = []
-#     for engine in engines:
-#         name = engine.name
-#         url = engine.url[:-1] if engine.url[-1] == '/' \
-#               else engine.url
-#         action = '/' + engine.form_action if engine.form_action[0] != '/' \
-#                  else engine.form_action
-#         method = engine.form_method
-#         name_attribute = engine.name_attribute
-#         icon = engine.icon
-#         search_engines.append({
-#             'name': name.strip(),
-#             'action': url.strip() + action.strip(),
-#             'method': method.strip(),
-#             'name_attribute': name_attribute.strip(),
-#             'default': engine.default,
-#             'icon': icon.strip()
-#         })
-#     return search_engines
 
 
 def get_default_search_engine(engines):
