@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'home.apps.HomeConfig',
     'settings.apps.SettingsConfig',
-    'setup.apps.SetupConfig'
+    'setup.apps.SetupConfig',
+    'bookmarks.apps.BookmarksConfig'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
