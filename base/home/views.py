@@ -1,8 +1,7 @@
-from django.shortcuts import render
-from .models import SearchEngine
-from .models import CustomUser
-from .utils import add_search_engine
-from .utils import get_search_engines
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from settings.models import Profile
 from .utils import get_default_search_engine
 from .utils import get_bookmark_categories
 from .utils import get_shortcuts
@@ -15,7 +14,14 @@ from .utils import get_today_forecast
 from .utils import get_current_weather
 
 
+@login_required()
 def home(request):
+    user = request.user
+    if user.first_login:
+        print('FIRST TIME')
+        return redirect('/setup/')
+
+    return HttpResponse(f'HOME PAGE -> {user}')
     search_engines = SearchEngine.objects.all()
     if not search_engines:
         add_search_engine()
@@ -23,7 +29,6 @@ def home(request):
 
     search_engines = get_search_engines()
     default_engine = get_default_search_engine(search_engines)
-    user = CustomUser.objects.get(id=request.user.id)
     bookmark_categories = get_bookmark_categories(user.id)
     shortcuts = get_shortcuts(bookmark_categories)
 

@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-
+from django.contrib.auth.decorators import login_required
 from .models import CustomUser
 from .forms import CustomUserCreationForm
 
 
 def login_user(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('home:home')
 
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -22,7 +22,7 @@ def login_user(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect('home:home')
     fields = {
         'Email': {
             'type':'email',
@@ -39,9 +39,11 @@ def login_user(request):
     return render(request, 'login.html', context)
 
 
+
+@login_required()
 def logout_user(request):
     logout(request)
-    return redirect('login_user')
+    return redirect('accounts:login_user')
 
 
 def register_user(request):

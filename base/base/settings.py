@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'accounts.apps.AccountsConfig',
     'home.apps.HomeConfig',
-    'settings.apps.SettingsConfig'
+    'settings.apps.SettingsConfig',
+    'setup.apps.SetupConfig'
 ]
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -63,7 +64,8 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'templates',
             BASE_DIR / 'home/templates/home',
-            BASE_DIR / 'settings/templates/settings'
+            BASE_DIR / 'settings/templates/settings',
+            BASE_DIR / 'setup/templates/setup'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

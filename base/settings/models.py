@@ -1,8 +1,10 @@
 from django.db import models
 from accounts.models import CustomUser
+from setup.models import EmailService, ApiService
 
 
 class Theme(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, unique=True)
     primary_color = models.CharField(max_length=9, null=True, blank=True, default='')
     secondary_color = models.CharField(max_length=9, null=True, blank=True, default='')
@@ -44,20 +46,9 @@ class Profile(models.Model):
         return 'Profile'
 
 
-class EmailService(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="+")
-    name = models.CharField(max_length=40, unique=True)
-
-    class Meta:
-        verbose_name_plural = 'Email Services'
-
-    def __str__(self):
-        return self.name
-
-
 class Email(models.Model):
     service = models.ForeignKey(EmailService, on_delete=models.CASCADE)
-    email = models.EmailField(unique=True, max_length=100, null=True, blank=True, default='')
+    email = models.EmailField(unique=True, max_length=100, null=True, blank=True)
     password = models.CharField(max_length=50, null=True, blank=True, default='')
     category = models.CharField(max_length=10, null=True, blank=True, default='')
     color = models.CharField(max_length=10, null=True, blank=True, default='')
@@ -67,17 +58,16 @@ class Email(models.Model):
         verbose_name_plural = 'Emails'
 
     def __str__(self):
-        return self.email
+        return self.email if self.email else self.service.name
 
 
-class Api(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100, null=True, blank=True, default='')
+class ApiKey(models.Model):
+    service = models.OneToOneField(ApiService, on_delete=models.CASCADE)
     key = models.CharField(max_length=500, null=True, blank=True, default='')
 
     class Meta:
-        verbose_name = 'Api'
+        verbose_name = 'Api Key'
         verbose_name_plural = 'Api Keys'
 
     def __str__(self):
-        return self.name
+        return 'Api Key'

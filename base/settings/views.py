@@ -1,11 +1,12 @@
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from accounts.models import CustomUser
-from .models import Profile, Email, Api, Theme, Interface
+from .models import Profile, Email, ApiKey, Theme, Interface
 from .forms import ThemeForm, ProfileForm, InterfaceForm, EmailForm, ApiForm
-from .utils import create_email_services
+# from .utils import create_email_services
 from .utils import get_email_accounts
-from .utils import create_api_services
+# from .utils import create_api_services
 from .utils import group_form_data
 from .utils import group_db_data
 from .utils import get_changed_data
@@ -14,15 +15,15 @@ from .utils import get_items_to_delete
 from .utils import delete_items
 
 
+
+@login_required()
 def settings(request):
     user = CustomUser.objects.get(id=request.user.id)
-    create_email_services(user)
-    create_api_services(user)
 
     profiles = Profile.objects.filter(user=user.id)
     email_services = get_email_accounts(user)
     emails = Email.objects.filter(service__user=user)
-    apis = Api.objects.filter(user=user.id)
+    apis = ApiKey.objects.filter(user=user.id)
     interfaces = Interface.objects.filter(user=user.id)
     themes = Theme.objects.all()
     errors = {}
@@ -35,7 +36,7 @@ def settings(request):
             'interface': interfaces, 'theme': themes
         }
         models = {
-            'profile': Profile, 'email': Email, 'api': Api,
+            'profile': Profile, 'email': Email, 'api': ApiKey,
             'interface': Interface, 'theme': Theme
         }
         forms = {

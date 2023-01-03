@@ -1,0 +1,22 @@
+<div id="interface">
+    <div class="field">
+        <label for="interface-mode">Dark Mode</label>
+        <input type="checkbox" name="interface-dark_mode" id="interface-dark_mode" checked>
+    </div>
+    <div class="field">
+        <label for="interface-sidebar">Sidebar right</label>
+        <input type="checkbox" name="interface-sidebar_right" id="interface-sidebar">
+    </div>
+    <div class="field">
+        <label for="interface-theme-id">Theme</label>
+        <select name="interface-theme" id="interface-theme-id">
+            {% for theme in themes %}
+                <option value="{{ theme.id }}">{{ theme.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="hidden">
+        <input type="hidden" name="interface-user_id" value="{{ interface.user.id }}">
+        <input type="hidden" name="interface-id" value="{{ interface.id }}">
+    </div>
+</div>

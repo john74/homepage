@@ -1,0 +1,12 @@
+<div id="apis" class="email-service">
+{% for api in apis %}
+    <div class="field">
+        <label for="api-key">{{api.service.name}} Key</label>
+        <input type="text" name="api-key" id="api-key">
+    </div>
+    <div class="hidden">
+        <input type="hidden" name="api-id" id="api-id" value="{{ api.id }}">
+        <input type="hidden" name="api-service" id="api-id" value="{{ api.service.id }}">
+    </div>
+{% endfor %}
+</div>

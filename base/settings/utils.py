@@ -1,4 +1,4 @@
-from .models import Api, EmailService, Email, Theme
+from .models import ApiKey, EmailService, Email, Theme
 
 
 def get_items_to_delete(data):
@@ -20,24 +20,6 @@ def delete_items(items):
         except (IndexError, KeyError, Theme.DoesNotExist, Email.DoesNotExist):
             return
         obj.delete()
-
-
-def create_api_services(user):
-    services = Api.objects.filter(user=user.id)
-    if services:
-        return services
-    services = ['Open Weather']
-    for service in services:
-        Api.objects.create(user=user, name=service)
-
-
-def create_email_services(user):
-    services = EmailService.objects.filter(user=user.id)
-    if services:
-        return services
-    services = ['Gmail', 'Proton Mail']
-    for service in services:
-        EmailService.objects.create(user=user, service=service)
 
 
 def get_email_accounts(user):
