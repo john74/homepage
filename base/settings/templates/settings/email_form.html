@@ -1,0 +1,39 @@
+
+
+<div id="settings-email" class="field-group">
+{% for service, email_accounts in email_services.items %}
+
+<div class="email-service">
+    <h3 class="service-title">{{service.name}}</h3>
+    {% for account in email_accounts %}
+    <div class="email-account">
+        <h3 class="service-title">{{service.name}}/{{account.category}}</h3>
+
+        <div class="field">
+            <label for="email-{{ account.id }}">Email</label>
+            <input type="email" name="email-email" id="email-{{ account.id }}" value="{{ account.email | default_if_none:'' }}">
+        </div>
+
+        <div class="field">
+            <label for="password-{{ account.id }}">Password</label>
+            <input type="text" name="email-password" id="password-{{ account.id }}" value="{{ account.password | default_if_none:'' }}">
+        </div>
+
+        <div class="field">
+            <label for="email-category-{{ account.id }}">Category</label>
+            <input type="text" name="email-category" id="category-{{ account.id }}" value="{{ account.category | default_if_none:'' }}">
+        </div>
+
+        <div class="field">
+            <label for="color-{{ account.id }}">Color</label>
+            <input type="text" name="email-color" id="color-{{ account.id }}" value="{{ account.color | default_if_none:'' }}">
+        </div>
+        <input type="hidden" name="email-id" value="{{ account.id }}">
+        <input type="hidden" name="email-service_id" value="{{ service.id }}">
+        <input type="checkbox" name='delete-email-{{ account.id }}'>
+    </div>
+    {% endfor %}
+</div>
+
+{% endfor %}
+</div>

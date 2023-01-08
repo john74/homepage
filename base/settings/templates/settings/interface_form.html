@@ -1,0 +1,34 @@
+<div id="interface">
+{% for interface in interfaces %}
+
+<div class="field">
+    <label for="interface-mode">Dark Mode</label>
+    {% if interface.dark_mode %}
+    <input type="checkbox" name="interface-dark_mode" id="interface-dark_mode" checked>
+    {% else %}
+    <input type="checkbox" name="interface-dark_mode" id="interface-dark_mode">
+    {% endif %}
+</div>
+<div class="field">
+    <label for="interface-sidebar">Sidebar right</label>
+    {% if interface.sidebar_right %}
+    <input type="checkbox" name="interface-sidebar_right" id="interface-sidebar_right" checked>
+    {% else %}
+    <input type="checkbox" name="interface-sidebar_right" id="interface-sidebar_right">
+    {% endif %}
+</div>
+<input type="hidden" name="interface-user_id" value="{{ interface.user.id }}">
+<input type="hidden" name="interface-id" value="{{ interface.id }}">
+<div class="field">
+    <label for="interface-theme_id">Theme</label>
+    <select name="interface-theme" id="interface-theme_id">
+        <option value="{{ interface.theme.id }}">{{ interface.theme }}</option>
+        {% for theme in themes %}
+            {% if theme.id != interface.theme.id %}
+            <option value="{{ theme.id }}">{{ theme.name }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+</div>
+{% endfor %}
+</div>

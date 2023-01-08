@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block title %}Settings{% endblock title %}
+{% block main %}
+
+
+
+<form method="POST" action="">
+    {% csrf_token %}
+
+    {% for field, error in errors.items %}
+        {{field}} - {{error}}
+    {% endfor %}
+
+    {% include 'profile_form.html' %}
+    {% include 'email_form.html' %}
+    {% include 'api_keys_form.html' %}
+    {% include 'interface_form.html' %}
+    {% include 'themes_form.html' %}
+    {% include 'bookmarks_form.html' %}
+
+
+    <input type="submit" value="Save">
+</form>
+{% endblock main %}
