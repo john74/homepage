@@ -16,38 +16,66 @@ def get_default_search_engine(engines):
             }
 
 
-def categorize_bookmarks(bookmark_categories):
+def get_bookmark_main_categories(bookmarks):
+    categories = set()
+    for bookmark in bookmarks:
+        categories.add(bookmark.category)
+    return categories
+
+def categorize_bookmarks(bookmark_categories, bookmarks):
     categorized_bookmarks = {}
     for category in bookmark_categories:
-        bookmarks = [bookmark for bookmark in Bookmark.objects.filter(category=category)]
-        categorized_bookmarks[category] = Bookmark.objects.filter(category=category)
+        category_bookmarks = []
+        for bookmark in bookmarks:
+            if bookmark.category == category:
+                category_bookmarks.append(bookmark)
+        if category_bookmarks:
+            categorized_bookmarks[category] = category_bookmarks
     return categorized_bookmarks
 
 
-def get_bookmarks_with_subcategory(categorized_bookmarks):
+def get_bookmark_sub_categories(bookmark_main_categories, bookmarks):
+    sub_categories = {}
+    for category in bookmark_main_categories:
+        temp = []
+        for bookmark in bookmarks:
+            if bookmark.sub_category is None:
+                continue
+            if bookmark.sub_category in temp:
+                continue
+            if bookmark.sub_category.category == category:
+                temp.append(bookmark.sub_category)
+        sub_categories[category] = temp
+    return sub_categories
+
+
+def get_bookmarks_with_subcategory(bookmark_sub_categories, categorized_bookmarks):
     bookmarks_with_subcategory = {}
     for category, bookmarks in categorized_bookmarks.items():
-        available_sub_categories = BookmarkSubCategory.objects.filter(category=category)
-        if available_sub_categories:
-            for sub_category in available_sub_categories:
-                sub_category_bookmarks = bookmarks.filter(sub_category=sub_category)
-                if sub_category_bookmarks:
-                    sub_category_name = sub_category_bookmarks[0].sub_category.name
-                    if category.name in bookmarks_with_subcategory:
-                        bookmarks_with_subcategory[category.name].update(
-                            {sub_category_name:sub_category_bookmarks}
-                        )
-                    else:
-                        bookmarks_with_subcategory[category.name] = {sub_category_name:sub_category_bookmarks}
+
+        available_sub_categories = bookmark_sub_categories[category]
+        if not available_sub_categories:
+            continue
+
+        temp = {}
+        for sub_category in available_sub_categories:
+            sub_temp = []
+            for bookmark in bookmarks:
+                if bookmark.sub_category == sub_category:
+                    sub_temp.append(bookmark)
+            temp[sub_category] = sub_temp
+        bookmarks_with_subcategory[category.name] = temp
     return bookmarks_with_subcategory
 
 
 def get_bookmarks_with_no_subcategory(categorized_bookmarks):
     bookmarks_with_no_subcategory = {}
     for category, bookmarks in categorized_bookmarks.items():
-        no_sub_category_bookmarks = bookmarks.filter(sub_category=None)
-        if no_sub_category_bookmarks:
-            bookmarks_with_no_subcategory[category.name] = no_sub_category_bookmarks
+        temp = []
+        for bookmark in bookmarks:
+            if bookmark.sub_category is None:
+                temp.append(bookmark)
+        bookmarks_with_no_subcategory[category.name] = temp
     return bookmarks_with_no_subcategory
 
 
