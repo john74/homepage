@@ -1,12 +1,10 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from accounts.models import CustomUser
+from setup.models import ApiService
 from .models import Profile, Email, ApiKey, Theme, Interface
 from .forms import ThemeForm, ProfileForm, InterfaceForm, EmailForm, ApiForm
-# from .utils import create_email_services
 from .utils import get_email_accounts
-# from .utils import create_api_services
 from .utils import group_form_data
 from .utils import group_db_data
 from .utils import get_changed_data
@@ -14,18 +12,19 @@ from .utils import save_form
 from .utils import get_items_to_delete
 from .utils import delete_items
 
-
-
 @login_required()
 def settings(request):
-    user = CustomUser.objects.get(id=request.user.id)
+    user = request.user
 
-    profiles = Profile.objects.filter(user=user.id)
+    profiles = Profile.objects.filter(user=user)
     email_services = get_email_accounts(user)
     emails = Email.objects.filter(service__user=user)
-    apis = ApiKey.objects.filter(user=user.id)
+    apis = ApiService.objects.filter(user=user)
     interfaces = Interface.objects.filter(user=user.id)
     themes = Theme.objects.all()
+
+
+
     errors = {}
 
     if request.method == 'POST':

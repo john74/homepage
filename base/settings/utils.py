@@ -1,6 +1,5 @@
 from .models import ApiKey, EmailService, Email, Theme
 
-
 def get_items_to_delete(data):
     items_to_delete = []
     for item in data:

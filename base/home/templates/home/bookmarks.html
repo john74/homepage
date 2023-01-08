@@ -1,12 +1,29 @@
-<div id="bookmarks">
-    {% for category, bookmarks in bookmark_categories.items %}
-    <div class="category">
-        <h3 class="title">{{category}}</h3>
-        <div class="bookmarks">
-            {% for bookmark in bookmarks %}
-            <a class="bookmark" href="{{ bookmark.url }}">{{ bookmark.name }}</a>
+{% for main_category in bookmark_categories %}
+
+<div class="category">
+    <h1 class="title">{{main_category}}</h1>
+
+    {% for parent_category, sub_category_bookmarks in bookmarks_with_subcategory.items %}
+        {% if parent_category == main_category %}
+            {% for title, bookmarks in sub_category_bookmarks.items %}
+            <div class="subcategory">
+                <h3 class="title">{{title}}</h3>
+                {% for bookmark in bookmarks %}
+                    <a href="">{{bookmark}}</a>
+                {% endfor %}
+            </div>
             {% endfor %}
-        </div>
-    </div>
+        {% endif %}
     {% endfor %}
+
+    {% for parent_category, bookmarks in bookmarks_with_no_subcategory.items %}
+        {% if parent_category == main_category %}
+            {% for bookmark in bookmarks %}
+                <a href="">{{bookmark}}</a>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
 </div>
+
+{% endfor %}
