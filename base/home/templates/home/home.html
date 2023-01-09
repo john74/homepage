@@ -8,8 +8,8 @@
     <div id="wrapper">
             {% include 'sidebar.html' %}
         <div id="main">
-            {% if apis.open_weather %}
-
+            {% if current_weather_data %}
+                {% include 'weather.html' %}
             {% endif %}
             {% include 'search.html' %}
             {% include 'bookmarks.html' %}

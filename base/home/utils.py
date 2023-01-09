@@ -3,6 +3,8 @@ import httpx
 from .constants import API_KEY_SERVICE_NAMES
 from bookmarks.models import Bookmark
 from bookmarks.models import BookmarkCategory, BookmarkSubCategory, Bookmark
+from settings.models import ApiKey, Profile
+
 
 def get_default_search_engine(engines):
     for engine in engines:
@@ -79,42 +81,42 @@ def get_bookmarks_with_no_subcategory(categorized_bookmarks):
     return bookmarks_with_no_subcategory
 
 
-def get_shortcuts(bookmark_categories):
+def get_shortcuts(bookmarks):
     shortcuts = []
-    for bookmarks in bookmark_categories.values():
-        for bookmark in bookmarks:
-            shortcut = bookmark.shortcut
-            if shortcut:
-                shortcuts.append({
-                    'name': bookmark.name,
-                    'url': bookmark.url,
-                    'icon': bookmark.icon
-                })
+    for bookmark in bookmarks:
+        if bookmark.is_shortcut:
+            shortcuts.append({
+                'name': bookmark.name,
+                'url': bookmark.url,
+                'icon': bookmark.icon
+            })
     return shortcuts
 
 
-def get_api_services(user_id):
-    apis = Api.objects.filter(user=user_id)
+def get_api_services(user):
+    apis = ApiKey.objects.filter(service__user=user)
     services = {}
     for api in apis:
-        name = api.name.lower().replace(' ', '_')
+        name = api.service.name.lower().replace(' ', '_')
         services[name] = api.key
     return services
 
 
-def add_api_service_names(user):
-    for name in API_KEY_SERVICE_NAMES:
-        Api.objects.create(
-            user = user,
-            name = name
-        )
+# def add_api_service_names(user):
+#     for name in API_KEY_SERVICE_NAMES:
+#         Api.objects.create(
+#             user = user,
+#             name = name
+#         )
 
 
-def get_forecast_data(key, user):
-    if not key:
+def get_forecast_data(api_services, user):
+    open_weather_api_key = api_services['open_weather']
+    if not open_weather_api_key:
         return
-    city = user.city
-    url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={key}&units=metric'
+    user_profile = Profile.objects.get(user=user)
+    city = user_profile.city
+    url = f'http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={open_weather_api_key}&units=metric'
     data = httpx.get(url)
 
     if data.status_code != 200:
@@ -122,16 +124,25 @@ def get_forecast_data(key, user):
     return data.json()
 
 
-def get_current_weather_data(key, user):
-    if not key:
+def get_current_weather_data(api_services, user):
+    open_weather_api_key = api_services['open_weather']
+    if not open_weather_api_key:
         return
-    city = user.city
-    url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}&units=metric'
+    user_profile = Profile.objects.get(user=user)
+    city = user_profile.city
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={open_weather_api_key}&units=metric'
     data = httpx.get(url)
 
     if data.status_code != 200:
         return
-    return data.json()
+    weather_data = data.json()
+    return {
+        'temp': weather_data['main']['temp'],
+        'temp_min': weather_data['main']['temp_min'],
+        'temp_max': weather_data['main']['temp_max'],
+        'feels_like': weather_data['main']['feels_like'],
+        'weather_description': weather_data['weather'][0]['description']
+    }
 
 
 def get_week_forecast(data):

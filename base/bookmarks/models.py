@@ -30,7 +30,7 @@ class Bookmark(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=700)
     icon = models.URLField(max_length=500, blank=True, null=True)
-    shortcut = models.BooleanField(default=False)
+    is_shortcut = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Bookmarks'
